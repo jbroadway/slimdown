@@ -1,0 +1,24 @@
+{
+	"name": "jbroadway/slimdown",
+	"type": "library",
+	"description": "A simple regex-based Markdown parser.",
+	"keywords": ["markdown","parser","parsing","html"],
+	"homepage": "https://github.com/jbroadway/slimdown",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Johnny Broadway",
+			"email": "johnny@johnnybroadway.com",
+			"homepage": "http://www.johnnybroadway.com/"
+		}
+	],
+	"require": {
+		"php": ">=7.2"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^8.5"
+	},
+	"autoload": {
+		"psr-0": { "Slimdown": "" }
+	}
+}
