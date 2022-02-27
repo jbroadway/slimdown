@@ -71,7 +71,7 @@ In this example, we add GitHub-style internal linking
 (e.g., `[[Another Page]]`).
 
 ```php
-<?[j[]]
+<?php
 
 function mywiki_internal_link ($title) {
 	return sprintf (
