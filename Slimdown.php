@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Slimdown - A very basic regex-based Markdown parser. Supports the
- * following elements (and can be extended via Slimdown::add_rule()):
+ * Slimdown - A simple regex-based Markdown parser in PHP. Supports the
+ * following elements (and can be extended via `Slimdown::add_rule()`):
  *
  * - Headers
  * - Links
@@ -10,33 +10,36 @@
  * - Emphasis
  * - Deletions
  * - Quotes
+ * - Code blocks
  * - Inline code
  * - Blockquotes
  * - Ordered/unordered lists
  * - Horizontal rules
+ * - Images
  *
  * Author: Johnny Broadway <johnny@johnnybroadway.com>
- * Website: https://gist.github.com/jbroadway/2836900
+ * Website: https://github.com/jbroadway/slimdown
  * License: MIT
  */
 class Slimdown {
 	public static $rules = array (
-		'/```(.*)```/s' => 'self::code_parse',                    // code blocks
-		'/\n(#+)(.*)/' => 'self::header',                         // headers
-		'/\[([^\[]+)\]\(([^\)]+)\)/' => '<a href=\'\2\'>\1</a>',  // links
-		'/(\*\*|__)(.*?)\1/' => '<strong>\2</strong>',            // bold
-		'/(\*|_)(.*?)\1/' => '<em>\2</em>',                       // emphasis
-		'/\~\~(.*?)\~\~/' => '<del>\1</del>',                     // del
-		'/\:\"(.*?)\"\:/' => '<q>\1</q>',                         // quote
-		'/`(.*?)`/' => '<code>\1</code>',                         // inline code
-		'/\n\*(.*)/' => 'self::ul_list',                          // ul lists
-		'/\n[0-9]+\.(.*)/' => 'self::ol_list',                    // ol lists
-		'/\n(&gt;|\>)(.*)/' => 'self::blockquote',                // blockquotes
-		'/\n-{5,}/' => "\n<hr />",                                // horizontal rule
-		'/\n([^\n]+)\n/' => 'self::para',                         // add paragraphs
-		'/<\/ul>\s?<ul>/' => '',                                  // fix extra ul
-		'/<\/ol>\s?<ol>/' => '',                                  // fix extra ol
-		'/<\/blockquote><blockquote>/' => "\n"                    // fix extra blockquote
+		'/```(.*)```/s' => 'self::code_parse',                              // code blocks
+		'/\n(#+)(.*)/' => 'self::header',                                   // headers
+		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => '<img src=\'\2\' alt=\'\1\' />',  // images
+		'/\[([^\[]+)\]\(([^\)]+)\)/' => '<a href=\'\2\'>\1</a>',            // links
+		'/(\*\*|__)(.*?)\1/' => '<strong>\2</strong>',                      // bold
+		'/(\*|_)(.*?)\1/' => '<em>\2</em>',                                 // emphasis
+		'/\~\~(.*?)\~\~/' => '<del>\1</del>',                               // del
+		'/\:\"(.*?)\"\:/' => '<q>\1</q>',                                   // quote
+		'/`(.*?)`/' => '<code>\1</code>',                                   // inline code
+		'/\n\*(.*)/' => 'self::ul_list',                                    // ul lists
+		'/\n[0-9]+\.(.*)/' => 'self::ol_list',                              // ol lists
+		'/\n(&gt;|\>)(.*)/' => 'self::blockquote',                          // blockquotes
+		'/\n-{5,}/' => "\n<hr />",                                          // horizontal rule
+		'/\n([^\n]+)\n/' => 'self::para',                                   // add paragraphs
+		'/<\/ul>\s?<ul>/' => '',                                            // fix extra ul
+		'/<\/ol>\s?<ol>/' => '',                                            // fix extra ol
+		'/<\/blockquote><blockquote>/' => "\n"                              // fix extra blockquote
 	);
 	
 	private static function code_parse ($regs) {

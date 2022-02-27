@@ -19,6 +19,7 @@ following elements (and can be extended via `Slimdown::add_rule()`):
 * Inline code
 * Blockquotes
 * Ordered/unordered lists
+* Images
 
 Originally hosted as a [gist here](https://gist.github.com/jbroadway/2836900).
 

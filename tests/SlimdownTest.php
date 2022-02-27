@@ -17,7 +17,7 @@ final class SlimdownTest extends \PHPUnit\Framework\TestCase {
 			$input = file_get_contents ($input_files[$i]);
 			$expected = file_get_contents ($expected_files[$i]);
 
-			static::assertSame ($expected, Slimdown::render ($input));
+			static::assertSame ($expected, Slimdown::render ($input), 'Test fixture ' . basename ($input_files[$i], '.md'));
 		}
 	}
 }
