@@ -1,5 +1,11 @@
 # Slimdown
 
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/jbroadway/slimdown/Continuous%20Integration/master)
+![Packagist License](https://img.shields.io/packagist/l/jbroadway/slimdown)
+![Packagist Version](https://img.shields.io/packagist/v/jbroadway/slimdown)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/jbroadway/slimdown)
+![Packagist Downloads](https://img.shields.io/packagist/dt/jbroadway/slimdown)
+
 A very basic regex-based Markdown parser. Supports the
 following elements (and can be extended via `Slimdown::add_rule()`):
 
