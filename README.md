@@ -2,9 +2,8 @@
 
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/jbroadway/slimdown/Continuous%20Integration/master)
 ![GitHub License](https://img.shields.io/github/license/jbroadway/slimdown)
-![GitHub Version](https://img.shields.io/github/v/tag/jbroadway/slimdown)
+![Packagist Version](https://img.shields.io/packagist/v/jbroadway/slimdown)
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/jbroadway/slimdown)
-![Packagist Downloads](https://img.shields.io/packagist/dt/jbroadway/slimdown)
 
 A simple regex-based Markdown parser in PHP. Supports the
 following elements (and can be extended via `Slimdown::add_rule()`):
