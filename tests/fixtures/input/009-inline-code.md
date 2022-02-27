@@ -1,0 +1,1 @@
+More text with `inline($code)` sample.

@@ -6,7 +6,7 @@
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/jbroadway/slimdown)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/jbroadway/slimdown)
 
-A very basic regex-based Markdown parser. Supports the
+A simple regex-based Markdown parser in PHP. Supports the
 following elements (and can be extended via `Slimdown::add_rule()`):
 
 * Headers

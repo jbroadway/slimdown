@@ -2,21 +2,22 @@
 
 final class SlimdownTest extends \PHPUnit\Framework\TestCase {
 	public function testRender () {
-		// Single line tests
-		static::assertSame ('<p>Foo</p>', Slimdown::render ('Foo'));
-		static::assertSame ('<h1>Foo</h1>', Slimdown::render ('# Foo'));
-		static::assertSame ('<h2>Foo</h2>', Slimdown::render ('## Foo'));
-		
-		// Heading, paragraph, bold and italics
-		static::assertSame (
-			"<h1>Page title</h1>\n\n<p>And <strong>now</strong> for something <em>completely</em> different.</p>",
-			Slimdown::render ("# Page title\n\nAnd **now** for something _completely_ different.")
-		);
+		$input_files = glob ('tests/fixtures/input/*.md');
+		$expected_files = glob ('tests/fixtures/expected/*.html');
 
-		// Links
-		static::assertSame (
-			"<p>A <a href='http://www.google.com'>link</a> and <a href='http://yahoo.com/'>another link</a>.</p>",
-			Slimdown::render ("A [link](http://www.google.com) and [another link](http://yahoo.com/).")
-		);
+		if (count ($input_files) !== count ($expected_files)) {
+			echo count ($input_files) . ' vs ' . count ($expected_files);
+			die ('Input and expected file list mismatch, unable to run tests.');
+		}
+
+		sort ($input_files);
+		sort ($expected_files);
+		
+		for ($i = 0; $i < count ($input_files); $i++) {
+			$input = file_get_contents ($input_files[$i]);
+			$expected = file_get_contents ($expected_files[$i]);
+
+			static::assertSame ($expected, Slimdown::render ($input));
+		}
 	}
 }

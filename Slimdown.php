@@ -31,7 +31,7 @@ class Slimdown {
 		'/`(.*?)`/' => '<code>\1</code>',                         // inline code
 		'/\n\*(.*)/' => 'self::ul_list',                          // ul lists
 		'/\n[0-9]+\.(.*)/' => 'self::ol_list',                    // ol lists
-		'/\n(&gt;|\>)(.*)/' => 'self::blockquote ',               // blockquotes
+		'/\n(&gt;|\>)(.*)/' => 'self::blockquote',                // blockquotes
 		'/\n-{5,}/' => "\n<hr />",                                // horizontal rule
 		'/\n([^\n]+)\n/' => 'self::para',                         // add paragraphs
 		'/<\/ul>\s?<ul>/' => '',                                  // fix extra ul
@@ -50,7 +50,7 @@ class Slimdown {
 		while (mb_substr ($item, -4) === '<br>') {
 			$item = mb_substr ($item, 0, -4);
 		}
-		return sprintf ("<code>%s</code>", trim ($item));
+		return sprintf ("<pre><code>%s</code></pre>", trim ($item));
 	}
 
 	private static function para ($regs) {
