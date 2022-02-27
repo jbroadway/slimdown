@@ -44,7 +44,7 @@ class Slimdown {
 	
 	private static function code_parse ($regs) {
 		$item = $regs[1];
-		$item = htmlentities ($item);
+		$item = htmlentities ($item, ENT_COMPAT);
 		$item = str_replace ("\n\n", '<br>', $item);
 		$item = str_replace ("\n", '<br>', $item);
 		while (mb_substr ($item, 0, 4) === '<br>') {
