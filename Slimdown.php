@@ -23,7 +23,7 @@
  */
 class Slimdown {
 	public static $rules = array (
-		'/```(.*)```/s' => 'self::code_parse',                              // code blocks
+		'/```(.*?)```/s' => 'self::code_parse',                              // code blocks
 		'/\n(#+)(.*)/' => 'self::header',                                   // headers
 		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => '<img src=\'\2\' alt=\'\1\' />',  // images
 		'/\[([^\[]+)\]\(([^\)]+)\)/' => '<a href=\'\2\'>\1</a>',            // links
