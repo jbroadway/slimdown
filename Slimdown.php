@@ -35,7 +35,7 @@ class Slimdown {
 		'/\=\=(.*?)\=\=/' => '<mark>\1</mark>',                             // mark
 		'/\n\-\ \[x\]/' => '<input type=\'checkbox\' disabled checked>',    // checkbox checked
 		'/\n\-\ \[\ \]/' => '<input type=\'checkbox\' disabled unchecked>', // checkbox unchecked
-		'/\n\*(.*)/' => self::class .'::ul_list',                           // ul lists
+		'/\n[\*|\+|\-](.*)/' => self::class .'::ul_list',                   // ul lists
 		'/\n[0-9]+\.(.*)/' => self::class .'::ol_list',                     // ol lists
 		'/\n(&gt;|\>)(.*)/' => self::class .'::blockquote',                 // blockquotes
 		'/\n-{3,}/' => "\n<hr>",                                            // horizontal rule
