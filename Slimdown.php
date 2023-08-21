@@ -32,10 +32,13 @@ class Slimdown {
 		'/\~\~(.*?)\~\~/' => '<del>\1</del>',                               // del
 		'/\:\"(.*?)\"\:/' => '<q>\1</q>',                                   // quote
 		'/`(.*?)`/' => '<code>\1</code>',                                   // inline code
+		'/\=\=(.*?)\=\=/' => '<mark>\1</mark>',                             // mark
+		'/\n\-\ \[x\]/' => '<input type=\'checkbox\' disabled checked>',    // checkbox checked
+		'/\n\-\ \[\ \]/' => '<input type=\'checkbox\' disabled unchecked>', // checkbox unchecked
 		'/\n\*(.*)/' => self::class .'::ul_list',                           // ul lists
 		'/\n[0-9]+\.(.*)/' => self::class .'::ol_list',                     // ol lists
 		'/\n(&gt;|\>)(.*)/' => self::class .'::blockquote',                 // blockquotes
-		'/\n-{5,}/' => "\n<hr>",                                            // horizontal rule
+		'/\n-{3,}/' => "\n<hr>",                                            // horizontal rule
 		'/\n([^\n]+)\n/' => self::class .'::para',                          // add paragraphs
 		'/<\/ul>\s?<ul>/' => '',                                            // fix extra ul
 		'/<\/ol>\s?<ol>/' => '',                                            // fix extra ol
