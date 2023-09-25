@@ -23,23 +23,23 @@
  */
 class Slimdown {
 	public static $rules = array (
-		'/```(.*?)```/s' => self::class .'::code_parse',                              // code blocks
-		'/\n(#+)(.*)/' => self::class .'::header',                                   // headers
-		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => '<img src=\'\2\' alt=\'\1\' />',  // images
-		'/\[([^\[]+)\]\(([^\)]+)\)/' => '<a href=\'\2\'>\1</a>',            // links
-		'/(\*\*|__)(.*?)\1/' => '<strong>\2</strong>',                      // bold
-		'/(\*|_)(.*?)\1/' => '<em>\2</em>',                                 // emphasis
-		'/\~\~(.*?)\~\~/' => '<del>\1</del>',                               // del
-		'/\:\"(.*?)\"\:/' => '<q>\1</q>',                                   // quote
-		'/`(.*?)`/' => '<code>\1</code>',                                   // inline code
-		'/\n\*(.*)/' => self::class .'::ul_list',                                    // ul lists
-		'/\n[0-9]+\.(.*)/' => self::class .'::ol_list',                              // ol lists
-		'/\n(&gt;|\>)(.*)/' => self::class .'::blockquote',                          // blockquotes
-		'/\n-{5,}/' => "\n<hr />",                                          // horizontal rule
-		'/\n([^\n]+)\n/' => self::class .'::para',                                   // add paragraphs
-		'/<\/ul>\s?<ul>/' => '',                                            // fix extra ul
-		'/<\/ol>\s?<ol>/' => '',                                            // fix extra ol
-		'/<\/blockquote><blockquote>/' => "\n"                              // fix extra blockquote
+		'/```(.*?)```/s' => self::class .'::code_parse',                            // code blocks
+		'/\n(#+)(.*)/' => self::class .'::header',                                  // headers
+		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => '<img src=\'\2\' alt=\'\1\' />',          // images
+		'/\[([^\[]+)\]\(([^\)]+)\)/' => '<a href=\'\2\'>\1</a>',                    // links
+		'/(\*\*|__)(?=([^`]*`[^`]*`)*[^`]*$))(.*?)\1/' => '<strong>\2</strong>',    // bold
+		'/(\*|_)(?=([^`]*`[^`]*`)*[^`]*$))(.*?)\1/' => '<em>\2</em>',               // emphasis
+		'/(\~\~)(?=([^`]*`[^`]*`)*[^`]*$))(.*?)\1/' => '<del>\1</del>',             // del
+		'/\:\"(.*?)\"\:/' => '<q>\1</q>',                                           // quote
+		'/`(.*?)`/' => '<code>\1</code>',                                           // inline code
+		'/\n\*(.*)/' => self::class .'::ul_list',                                   // ul lists
+		'/\n[0-9]+\.(.*)/' => self::class .'::ol_list',                             // ol lists
+		'/\n(&gt;|\>)(.*)/' => self::class .'::blockquote',                         // blockquotes
+		'/\n-{5,}/' => "\n<hr />",                                                  // horizontal rule
+		'/\n([^\n]+)\n/' => self::class .'::para',                                  // add paragraphs
+		'/<\/ul>\s?<ul>/' => '',                                                    // fix extra ul
+		'/<\/ol>\s?<ol>/' => '',                                                    // fix extra ol
+		'/<\/blockquote><blockquote>/' => "\n"                                      // fix extra blockquote
 	);
 	
 	private static function code_parse ($regs) {
