@@ -27,9 +27,16 @@ class Slimdown {
 		'/\n(#+)(.*)/' => self::class .'::header',                                  // headers
 		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => '<img src=\'\2\' alt=\'\1\' />',          // images
 		'/\[([^\[]+)\]\(([^\)]+)\)/' => '<a href=\'\2\'>\1</a>',                    // links
-		'/(\*\*|__)(?=([^`]*`[^`]*`)*[^`]*$)(.*?)\1/' => '<strong>\2</strong>',     // bold
-		'/(\*|_)(?=([^`]*`[^`]*`)*[^`]*$)(.*?)\1/' => '<em>\2</em>',                // emphasis
-		'/(\~\~)(?=([^`]*`[^`]*`)*[^`]*$)(.*?)\1/' => '<del>\2</del>',              // del
+		
+		// Test this one out, see if it works for links, also
+		// /(\[([^\[\]]+|(\1))*\])(?:\((\S*?)(?:[ ]"((?:[^"]|(?<=\\)")*?)")?\))/ => '<a href=\'\4\' title=\'\5\'>\2</a>'
+		// found it while looking for soemthing else, but it'll support [text](url "alt text")
+		// if negative look-behind is unsupported remove just this portion:
+		// |(?<=\\)"
+		
+		'/(\*\*|__)(?=(?:(?:[^`]*[`][^`>]*[`>])*[^`>]*$))(.*?)\1/' => '<strong>\2</strong>',     // bold
+		'/(\*|_)(?=(?:(?:[^`]*[`][^`>]*[`>])*[^`>]*$))(.*?)\1/' => '<em>\2</em>',                // emphasis
+		'/(\~\~)(?=(?:(?:[^`]*[`][^`>]*[`>])*[^`>]*$))(.*?)\1' => '<del>\2</del>',              // del
 		'/\:\"(.*?)\"\:/' => '<q>\1</q>',                                           // quote
 		'/`(.*?)`/' => '<code>\1</code>',                                           // inline code
 		'/\n\*(.*)/' => self::class .'::ul_list',                                   // ul lists
