@@ -25,7 +25,7 @@ class Slimdown {
 	public static $rules = array (
 		'/```(.*?)```/s' => self::class .'::code_parse',                                                          // code blocks
 		'/\n(#+)(.*)/' => self::class .'::header',                                                                // headers
-		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => '<img src=\'\2\' alt=\'\1\' />',                                        // images
+		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => self::class .'::img',                                        // images
 		'/\[([^\[]+)\]\(([^\)]+)\)/' => self::class .'::link',                                                    // links
 		'/(\*\*|__)(?=(?:(?:[^`]*`[^`\r\n]*`)*[^`]*$))(?![^\/<]*>.*<\/.+>)(.*?)\1/' => '<strong>\2</strong>',     // bold
 		'/(\*|_)(?=(?:(?:[^`]*`[^`\r\n]*`)*[^`]*$))(?![^\/<]*>.*<\/.+>)(.*?)\1/' => '<em>\2</em>',                // emphasis
@@ -41,6 +41,7 @@ class Slimdown {
 		'/<\/ol>\s?<ol>/' => '',                                                                                  // fix extra ol
 		'/<\/blockquote><blockquote>/' => "\n",                                                                   // fix extra blockquote
 		'/<a href=\'(.*?)\'>/' => self::class .'::fix_link',                                                      // fix links
+		'/<img src=\'(.*?)\'/' => self::class .'::fix_img',                                                       // fix images
 		'/<p>{{{([0-9]+)}}}<\/p>/s' => self::class .'::reinsert_code_blocks'                                      // re-insert code blocks
 	);
 
@@ -108,10 +109,23 @@ class Slimdown {
 		return sprintf ('<a href=\'%s\'>%s</a>', $link, $text);
 	}
 
+	private static function img ($regs) {
+		list ($tmp, $text, $link) = $regs;
+		// Substitute _ and * in links so they don't break the URLs
+		$link = str_replace (['_', '*'], ['{^^^}', '{~~~}'], $link);
+		return sprintf ('<img src=\'%s\' alt=\'%s\' />', $link, $text);
+	}
+
 	private static function fix_link ($regs) {
 		// Replace substitutions so links are preserved
 		$fixed_link = str_replace (['{^^^}', '{~~~}'], ['_', '*'], $regs[1]);
 		return sprintf ('<a href=\'%s\'>', $fixed_link);
+	}
+
+	private static function fix_img ($regs) {
+		// Replace substitutions so links are preserved
+		$fixed_link = str_replace (['{^^^}', '{~~~}'], ['_', '*'], $regs[1]);
+		return sprintf ('<img src=\'%s\'', $fixed_link);
 	}
 
 	/**
