@@ -23,24 +23,28 @@
  */
 class Slimdown {
 	public static $rules = array (
-		'/```(.*?)```/s' => self::class .'::code_parse',                              // code blocks
-		'/\n(#+)(.*)/' => self::class .'::header',                                   // headers
-		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => '<img src=\'\2\' alt=\'\1\' />',  // images
-		'/\[([^\[]+)\]\(([^\)]+)\)/' => '<a href=\'\2\'>\1</a>',            // links
-		'/(\*\*|__)(.*?)\1/' => '<strong>\2</strong>',                      // bold
-		'/(\*|_)(.*?)\1/' => '<em>\2</em>',                                 // emphasis
-		'/\~\~(.*?)\~\~/' => '<del>\1</del>',                               // del
-		'/\:\"(.*?)\"\:/' => '<q>\1</q>',                                   // quote
-		'/`(.*?)`/' => '<code>\1</code>',                                   // inline code
-		'/\n\*(.*)/' => self::class .'::ul_list',                                    // ul lists
-		'/\n[0-9]+\.(.*)/' => self::class .'::ol_list',                              // ol lists
-		'/\n(&gt;|\>)(.*)/' => self::class .'::blockquote',                          // blockquotes
-		'/\n-{5,}/' => "\n<hr />",                                          // horizontal rule
-		'/\n([^\n]+)\n/' => self::class .'::para',                                   // add paragraphs
-		'/<\/ul>\s?<ul>/' => '',                                            // fix extra ul
-		'/<\/ol>\s?<ol>/' => '',                                            // fix extra ol
-		'/<\/blockquote><blockquote>/' => "\n"                              // fix extra blockquote
+		'/```(.*?)```/s' => self::class .'::code_parse',                                                          // code blocks
+		'/\n(#+)(.*)/' => self::class .'::header',                                                                // headers
+		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => '<img src=\'\2\' alt=\'\1\' />',                                        // images
+		'/\[([^\[]+)\]\(([^\)]+)\)/' => self::class .'::link',                                                    // links
+		'/(\*\*|__)(?=(?:(?:[^`]*`[^`\r\n]*`)*[^`]*$))(?![^\/<]*>.*<\/.+>)(.*?)\1/' => '<strong>\2</strong>',     // bold
+		'/(\*|_)(?=(?:(?:[^`]*`[^`\r\n]*`)*[^`]*$))(?![^\/<]*>.*<\/.+>)(.*?)\1/' => '<em>\2</em>',                // emphasis
+		'/(\~\~)(?=(?:(?:[^`]*`[^`\r\n]*`)*[^`]*$))(?![^\/<]*>.*<\/.+>)(.*?)\1/' => '<del>\2</del>',              // del
+		'/\:\"(.*?)\"\:/' => '<q>\1</q>',                                                                         // quote
+		'/`(.*?)`/' => '<code>\1</code>',                                                                         // inline code
+		'/\n\*(.*)/' => self::class .'::ul_list',                                                                 // ul lists
+		'/\n[0-9]+\.(.*)/' => self::class .'::ol_list',                                                           // ol lists
+		'/\n(&gt;|\>)(.*)/' => self::class .'::blockquote',                                                       // blockquotes
+		'/\n-{5,}/' => "\n<hr />",                                                                                // horizontal rule
+		'/\n([^\n]+)\n/' => self::class .'::para',                                                                // add paragraphs
+		'/<\/ul>\s?<ul>/' => '',                                                                                  // fix extra ul
+		'/<\/ol>\s?<ol>/' => '',                                                                                  // fix extra ol
+		'/<\/blockquote><blockquote>/' => "\n",                                                                   // fix extra blockquote
+		'/<a href=\'(.*?)\'>/' => self::class .'::fix_link',                                                      // fix links
+		'/<p>{{{([0-9]+)}}}<\/p>/s' => self::class .'::reinsert_code_blocks'                                      // re-insert code blocks
 	);
+
+	private static $code_blocks = [];
 	
 	private static function code_parse ($regs) {
 		$item = $regs[1];
@@ -53,7 +57,15 @@ class Slimdown {
 		while (mb_substr ($item, -4) === '<br>') {
 			$item = mb_substr ($item, 0, -4);
 		}
-		return sprintf ("<pre><code>%s</code></pre>", trim ($item));
+		// Store code blocks with placeholders to avoid other regexes affecting them
+		self::$code_blocks[] = sprintf ("<pre><code>%s</code></pre>", trim ($item));
+		return sprintf ("{{{%d}}}", count (self::$code_blocks) - 1);
+	}
+
+	private static function reinsert_code_blocks ($regs) {
+		// Reinsert the stored code blocks at the end
+		$index = $regs[1];
+		return self::$code_blocks[$index];
 	}
 
 	private static function para ($regs) {
@@ -89,6 +101,19 @@ class Slimdown {
 		return sprintf ('<h%d>%s</h%d>', $level, trim ($header), $level);
 	}
 
+	private static function link ($regs) {
+		list ($tmp, $text, $link) = $regs;
+		// Substitute _ and * in links so they don't break the URLs
+		$link = str_replace (['_', '*'], ['{^^^}', '{~~~}'], $link);
+		return sprintf ('<a href=\'%s\'>%s</a>', $link, $text);
+	}
+
+	private static function fix_link ($regs) {
+		// Replace substitutions so links are preserved
+		$fixed_link = str_replace (['{^^^}', '{~~~}'], ['_', '*'], $regs[1]);
+		return sprintf ('<a href=\'%s\'>', $fixed_link);
+	}
+
 	/**
 	 * Add a rule.
 	 */
@@ -100,6 +125,7 @@ class Slimdown {
 	 * Render some Markdown into HTML.
 	 */
 	public static function render ($text) {
+		self::$code_blocks = [];
 		$text = "\n" . $text . "\n";
 		foreach (self::$rules as $regex => $replacement) {
 			if (is_callable ( $replacement)) {
