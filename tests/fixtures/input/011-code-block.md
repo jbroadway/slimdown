@@ -1,5 +1,5 @@
 ```
 function foo () {
-	print ('Foo');
+	print ('*Foo* _bar_');
 }
 ```
