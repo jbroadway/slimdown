@@ -1,6 +1,6 @@
 # Slimdown
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/jbroadway/slimdown/Continuous%20Integration/master)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/jbroadway/slimdown/test.yml?branch=master)
 ![GitHub License](https://img.shields.io/github/license/jbroadway/slimdown)
 ![Packagist Version](https://img.shields.io/packagist/v/jbroadway/slimdown)
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/jbroadway/slimdown)
