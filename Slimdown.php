@@ -24,8 +24,8 @@
 class Slimdown {
 	public static $rules = array (
 		'/```(.*?)```/s' => self::class .'::code_parse',                                                          // code blocks
-		'/\n(#\s+)(.*)/' => self::class .'::header',                                                              // headers
-		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => self::class .'::img',                                        // images
+		'/\n(#+)\s+(.*)/' => self::class .'::header',                                                             // headers
+		'/\!\[([^\[]+)\]\(([^\)]+)\)/' => self::class .'::img',                                                   // images
 		'/\[([^\[]+)\]\(([^\)]+)\)/' => self::class .'::link',                                                    // links
 		'/(\*\*|__)(?=(?:(?:[^`]*`[^`\r\n]*`)*[^`]*$))(?![^\/<]*>.*<\/.+>)(.*?)\1/' => '<strong>\2</strong>',     // bold
 		'/(\*|_)(?=(?:(?:[^`]*`[^`\r\n]*`)*[^`]*$))(?![^\/<]*>.*<\/.+>)(.*?)\1/' => '<em>\2</em>',                // emphasis
