@@ -25,7 +25,7 @@ class Slimdown {
 	public static $rules = array (
 		'/```(.*?)```/s' => self::class .'::code_parse',                                                          // code blocks
 		'/\n(#+)\s+(.*)/' => self::class .'::header',                                                             // headers
-		'/\!\[([^\[]*?)\]\(([^\)]+)\)/' => self::class .'::img',                                                   // images
+		'/\!\[([^\[]*?)\]\(([^\)]+)\)/' => self::class .'::img',                                                  // images
 		'/\[([^\[]+)\]\(([^\)]+)\)/' => self::class .'::link',                                                    // links
 		'/(\*\*|__)(?=(?:(?:[^`]*`[^`\r\n]*`)*[^`]*$))(?![^\/<]*>.*<\/.+>)(.*?)\1/' => '<strong>\2</strong>',     // bold
 		'/(\*|_)(?=(?:(?:[^`]*`[^`\r\n]*`)*[^`]*$))(?![^\/<]*>.*<\/.+>)(.*?)\1/' => '<em>\2</em>',                // emphasis
@@ -34,10 +34,10 @@ class Slimdown {
 		'/`(.*?)`/' => '<code>\1</code>',                                                                         // inline code
 		'/(\n[\*|\-] )\[x\]/' => '\1<input type=\'checkbox\' disabled checked>',                                  // checkbox checked
 		'/(\n[\*|\-] )\[\ \]/' => '\1<input type=\'checkbox\' disabled>',                                         // checkbox unchecked
-		'/\n[\*|\-] (.*)/' => self::class .'::ul_list',                                                                 // ul lists
+		'/\n[\*|\-] (.*)/' => self::class .'::ul_list',                                                           // ul lists
 		'/\n[0-9]+\.(.*)/' => self::class .'::ol_list',                                                           // ol lists
 		'/\n(&gt;|\>)(.*)/' => self::class .'::blockquote',                                                       // blockquotes
-		'/\n-{5,}/' => "\n<hr>",                                                                                // horizontal rule
+		'/\n-{5,}/' => "\n<hr>",                                                                                  // horizontal rule
 		'/\n([^\n]+)\n/' => self::class .'::para',                                                                // add paragraphs
 		'/<\/ul>\s?<ul>/' => '',                                                                                  // fix extra ul
 		'/<\/ol>\s?<ol>/' => '',                                                                                  // fix extra ol
