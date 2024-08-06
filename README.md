@@ -18,6 +18,7 @@ following elements (and can be extended via `Slimdown::add_rule()`):
 * Inline code
 * Blockquotes
 * Ordered/unordered lists
+* Checklists
 * Images
 
 Originally hosted as a [gist here](https://gist.github.com/jbroadway/2836900).
@@ -112,6 +113,10 @@ More text with `inline($code)` sample.
 
 > A block quote
 > across two lines.
+
+- [ ] One
+- [x] Two
+- [ ] Three
 
 More text...");
 ```
